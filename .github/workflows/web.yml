@@ -1,0 +1,14 @@
+name: Deploy Web
+
+on:
+  push:
+    paths:
+      - web/**
+      - .github/workflows/web.yml
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Web deployment stub"

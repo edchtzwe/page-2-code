@@ -1,0 +1,14 @@
+name: Deploy API
+
+on:
+  push:
+    paths:
+      - api/**
+      - .github/workflows/api.yml
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "API deployment stub"

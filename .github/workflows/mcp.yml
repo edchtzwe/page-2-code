@@ -1,0 +1,14 @@
+name: Deploy MCP
+
+on:
+  push:
+    paths:
+      - mcp/**
+      - .github/workflows/mcp.yml
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "MCP deployment stub"

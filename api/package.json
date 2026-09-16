@@ -1,0 +1,34 @@
+{
+  "name": "@page-2-code/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "NestJS API for page-2-code.",
+  "scripts": {
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev"
+  },
+  "dependencies": {
+    "@google/adk": "latest",
+    "@google/genai": "latest",
+    "@modelcontextprotocol/client": "latest",
+    "@nestjs/common": "latest",
+    "@nestjs/core": "latest",
+    "@nestjs/platform-express": "latest",
+    "@prisma/client": "latest",
+    "openai": "latest",
+    "reflect-metadata": "latest",
+    "rxjs": "latest"
+  },
+  "devDependencies": {
+    "@google/adk-devtools": "latest",
+    "@nestjs/cli": "latest",
+    "@nestjs/schematics": "latest",
+    "@nestjs/testing": "latest",
+    "@types/node": "latest",
+    "prisma": "latest",
+    "ts-node": "latest",
+    "typescript": "latest"
+  }
+}
