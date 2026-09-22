@@ -4,31 +4,38 @@
   "private": true,
   "description": "NestJS API for page-2-code.",
   "scripts": {
+    "build": "nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
+    "start:prod": "node dist/main.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
-    "@google/adk": "latest",
-    "@google/genai": "latest",
-    "@modelcontextprotocol/client": "latest",
-    "@nestjs/common": "latest",
-    "@nestjs/core": "latest",
-    "@nestjs/platform-express": "latest",
-    "@prisma/client": "latest",
-    "openai": "latest",
-    "reflect-metadata": "latest",
-    "rxjs": "latest"
+    "@google/adk": "^2.1.0",
+    "@google/genai": "^2.23.0",
+    "@modelcontextprotocol/client": "^2.0.0",
+    "@nestjs/common": "^12.0.3",
+    "@nestjs/core": "^12.0.3",
+    "@nestjs/platform-express": "^12.0.3",
+    "@prisma/client": "^7.10.0",
+    "openai": "^7.17.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
-    "@google/adk-devtools": "latest",
-    "@nestjs/cli": "latest",
-    "@nestjs/schematics": "latest",
-    "@nestjs/testing": "latest",
-    "@types/node": "latest",
-    "prisma": "latest",
-    "ts-node": "latest",
-    "typescript": "latest"
+    "@google/adk-devtools": "^2.1.0",
+    "@nestjs/cli": "^12.0.3",
+    "@nestjs/schematics": "^12.0.3",
+    "@nestjs/testing": "^12.0.3",
+    "@types/node": "^26.6.1",
+    "prisma": "^7.10.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.2"
+  },
+  "overrides": {
+    "adm-zip": "0.6.1",
+    "deepmerge-ts": "8.0.2",
+    "mysql2": "3.24.4"
   }
 }

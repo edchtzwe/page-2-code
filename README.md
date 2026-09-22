@@ -20,17 +20,23 @@ This README is intentionally rolling and will be expanded as the product evolves
 
 - `api/` — NestJS backend.
 - `mcp/` — Fastify-based MCP HTTP server.
+- `tools/` — Python FastAPI service hosting the tool implementations dispatched by `mcp/`.
 - `web/` — future React Native and NativeWind application.
 
-## Podman development pod
+## Podman development stack
 
-A single Podman pod runs PostgreSQL, the API, MCP server, and web development containers. Every application container mounts the full repository at `/app`.
+A single development stack runs PostgreSQL, the API, MCP server, and web containers. Every application container mounts the full repository at `/app`, and each one idles in a sleep loop so you can enter it and install dependencies by hand.
+
+### Podman Compose
+
+`compose.yaml` defines the stack.
 
 ```bash
-./scripts/podman-dev.sh up
+podman compose up -d
+podman compose up -d api
 ```
 
-Enter a service container with Podman:
+Enter a service container:
 
 ```bash
 podman exec -it page-2-code-api bash
@@ -38,9 +44,18 @@ podman exec -it page-2-code-mcp bash
 podman exec -it page-2-code-web bash
 ```
 
-Stop and remove the development pod:
+Stop and remove the stack:
 
 ```bash
+podman compose down
+```
+
+### Podman pod script
+
+`scripts/podman-dev.sh` builds the same three images and runs the same four containers inside a single pod instead of a Compose project.
+
+```bash
+./scripts/podman-dev.sh up
 ./scripts/podman-dev.sh down
 ```
 

@@ -11,6 +11,7 @@ readonly API_CONTAINER="page-2-code-api"
 readonly MCP_CONTAINER="page-2-code-mcp"
 readonly WEB_CONTAINER="page-2-code-web"
 readonly POSTGRES_CONTAINER="page-2-code-postgres"
+readonly POSTGRES_IMAGE="postgres:18.6-bookworm"
 readonly POSTGRES_DATABASE="page_2_code"
 readonly POSTGRES_USER="page_2_code"
 readonly POSTGRES_PASSWORD="page_2_code_dev"
@@ -28,6 +29,7 @@ start_pod() {
     --name "${POD_NAME}" \
     --publish 3000:3000 \
     --publish 3002:3002 \
+    --publish 5432:5432 \
     --publish 8081:8081
 
   podman run --detach \
@@ -37,7 +39,7 @@ start_pod() {
     --env "POSTGRES_USER=${POSTGRES_USER}" \
     --env "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" \
     --volume "page-2-code-postgres-data:/var/lib/postgresql/data:Z" \
-    postgres:latest
+    "${POSTGRES_IMAGE}"
 
   podman run --detach \
     --name "${API_CONTAINER}" \
