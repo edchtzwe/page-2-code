@@ -2,7 +2,13 @@ node_modules/
 dist/
 coverage/
 .env
-.env.*
 work-progress/
 jev-code-review/
+/workflow/
+/compose.yaml
+/keys/
+__pycache__/
+*.pyc
+bruno/
 *.tsbuildinfo
+memory/
