@@ -13,7 +13,6 @@
     "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
-    "@google/adk": "^2.1.0",
     "@google/genai": "^2.23.0",
     "@modelcontextprotocol/client": "^2.0.0",
     "@nestjs/bullmq": "^12.0.0",
@@ -22,15 +21,14 @@
     "@nestjs/platform-express": "^12.0.3",
     "@prisma/client": "^7.10.0",
     "bullmq": "^6.3.9",
-    "ipaddr.js": "^2.5.0",
     "ioredis": "^6.0.0",
+    "ipaddr.js": "^2.5.0",
     "jsonwebtoken": "^9.0.3",
     "openai": "^7.17.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
-    "@google/adk-devtools": "^2.1.0",
     "@nestjs/cli": "^12.0.3",
     "@nestjs/schematics": "^12.0.3",
     "@nestjs/testing": "^12.0.3",

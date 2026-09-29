@@ -1,5 +1,15 @@
 name: page-2-code-dev
 
+networks:
+  page-2-code:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.23.0.0/16
+
+volumes:
+  page-2-code-postgres-data:
+
 services:
   postgres:
     image: postgres:18.6-bookworm
@@ -8,38 +18,99 @@ services:
       POSTGRES_USER: page_2_code
       POSTGRES_PASSWORD: page_2_code_dev
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
-      - page-2-code-postgres-data:/var/lib/postgresql/data:Z
+      - page-2-code-postgres-data:/var/lib/postgresql:Z
+    networks:
+      - page-2-code
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U page_2_code -d page_2_code"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  redis:
+    image: redis:8.8.3-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+    networks:
+      - page-2-code
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  fortress:
+    image: tilion/fortress:latest
+    container_name: fortress_browser_openclawder
+    restart: unless-stopped
+    shm_size: "1gb"
+    ports:
+      - "127.0.0.1:9224:9222"
+    networks:
+      page-2-code:
+        ipv4_address: 172.23.0.99
+
+  tools:
+    build:
+      context: ./tools
+    working_dir: /app/tools
+    command: ["bash", "-lc", "while true; do sleep 3600; done"]
+    volumes:
+      - .:/app:Z
+    ports:
+      - "127.0.0.1:8000:8000"
+    networks:
+      - page-2-code
+    depends_on:
+      - fortress
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health').read()"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
 
   api:
     build:
       context: ./api
     working_dir: /app/api
+    command: ["bash", "-lc", "while true; do sleep 3600; done"]
     volumes:
       - .:/app:Z
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     depends_on:
       - postgres
+      - redis
+    networks:
+      - page-2-code
 
   mcp:
     build:
       context: ./mcp
     working_dir: /app/mcp
+    command: ["bash", "-lc", "while true; do sleep 3600; done"]
     volumes:
       - .:/app:Z
     ports:
-      - "3002:3002"
+      - "127.0.0.1:3002:3002"
+    depends_on:
+      - tools
+      - redis
+    networks:
+      - page-2-code
 
   web:
     build:
       context: ./web
     working_dir: /app/web
+    command: ["bash", "-lc", "while true; do sleep 3600; done"]
     volumes:
       - .:/app:Z
     ports:
-      - "8081:8081"
-
-volumes:
-  page-2-code-postgres-data:
+      - "127.0.0.1:8081:8081"
+    depends_on:
+      - api
+    networks:
+      - page-2-code
