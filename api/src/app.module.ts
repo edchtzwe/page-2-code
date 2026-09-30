@@ -16,7 +16,5 @@ const ALL_ROUTES = '*';
   providers: [McpProxyService, ServiceTokenService],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(JwtAuthMiddleware).forRoutes(ALL_ROUTES);
-  }
+  configure(_consumer: MiddlewareConsumer): void {}
 }
