@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Final
 
+from fastapi import status
 import httpx
 
 LOGGER: Final[logging.Logger] = logging.getLogger(__name__)
@@ -24,8 +25,6 @@ MAX_PATCH_HUNKS_PER_FILE: Final[int] = 64
 
 VAULT_HEADER_TOKEN: Final[str] = "X-Vault-Token"
 VAULT_HTTP_TIMEOUT_SECONDS: Final[float] = 5.0
-HTTP_STATUS_OK: Final[int] = 200
-HTTP_STATUS_NOT_FOUND: Final[int] = 404
 
 
 @dataclass(frozen=True)
@@ -82,10 +81,10 @@ def _fetch_vault_secrets() -> dict[str, str]:
     try:
         with httpx.Client(timeout=VAULT_HTTP_TIMEOUT_SECONDS) as client:
             response: httpx.Response = client.get(url, headers=headers)
-            if response.status_code == HTTP_STATUS_NOT_FOUND:
+            if response.status_code == status.HTTP_404_NOT_FOUND:
                 LOGGER.warning("vault path not found: %s", secret_path)
                 return {}
-            if response.status_code != HTTP_STATUS_OK:
+            if response.status_code != status.HTTP_200_OK:
                 LOGGER.warning("failed to fetch secrets from vault: %s (status %d)", response.text, response.status_code)
                 return {}
 

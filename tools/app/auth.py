@@ -4,7 +4,7 @@ import logging
 from typing import Final
 
 import jwt
-from fastapi import Request
+from fastapi import Request, status
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.responses import JSONResponse, Response
 from starlette.types import ASGIApp
@@ -17,7 +17,6 @@ AUTHORIZATION_HEADER: Final[str] = "authorization"
 BEARER_PREFIX: Final[str] = "Bearer "
 OPTIONS_METHOD: Final[str] = "OPTIONS"
 HEALTH_PATH: Final[str] = "/health"
-UNAUTHORIZED_STATUS: Final[int] = 401
 UNAUTHORIZED_DETAIL: Final[str] = "unauthorized"
 WWW_AUTHENTICATE_HEADER: Final[str] = "WWW-Authenticate"
 WWW_AUTHENTICATE_VALUE: Final[str] = "Bearer"
@@ -35,7 +34,7 @@ def _extract_bearer_token(header: str | None) -> str | None:
 def _reject(reason: str) -> JSONResponse:
     LOGGER.warning("rejected request: %s", reason)
     return JSONResponse(
-        status_code=UNAUTHORIZED_STATUS,
+        status_code=status.HTTP_401_UNAUTHORIZED,
         content={"detail": UNAUTHORIZED_DETAIL},
         headers={WWW_AUTHENTICATE_HEADER: WWW_AUTHENTICATE_VALUE},
     )
