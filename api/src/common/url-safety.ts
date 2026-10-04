@@ -75,8 +75,8 @@ function inspectHostname(hostname: string): string | null {
     return `numeric hostname is not allowed: ${hostname}`;
   }
 
-  if (ipaddr.isValid(hostname) && isBlockedAddress(hostname)) {
-    return `blocked address: ${hostname}`;
+  if (ipaddr.isValid(hostname)) {
+    return `direct IP hostnames are not allowed: ${hostname}`;
   }
   return null;
 }

@@ -16,6 +16,7 @@ const SERVICE_NAME = 'page-2-code-mcp';
 const SERVICE_VERSION = '0.0.0';
 const SERVICE_STATUS_OK = 'ok';
 const HEALTH_PATH = '/health';
+const READY_PATH = '/ready';
 const MCP_PROTOCOL_PATH = '/mcp';
 const TOOLS_LIST_PATH = '/mcp/tools';
 const TOOLS_CALL_PATH = '/mcp/tools/:name';
@@ -68,6 +69,20 @@ export function buildServer(config: McpConfig, registry?: ToolRegistry): Fastify
     service: SERVICE_NAME,
     version: SERVICE_VERSION,
   }));
+
+  server.get(READY_PATH, async (request, reply) => {
+    try {
+      await toolRegistry.getTools();
+      return {
+        status: SERVICE_STATUS_OK,
+        service: SERVICE_NAME,
+        version: SERVICE_VERSION,
+      };
+    } catch (error: unknown) {
+      request.log.error({ err: error }, 'Readiness probe failed: tools service unavailable');
+      return reply.status(HTTP_STATUS_BAD_GATEWAY).send({ error: ERROR_TOOLS_UNAVAILABLE });
+    }
+  });
 
   server.get(TOOLS_LIST_PATH, async (request, reply) => {
     try {

@@ -53,6 +53,17 @@ def health() -> HealthResponse:
     return HealthResponse(status=SERVICE_STATUS_OK, service=SERVICE_NAME, version=SERVICE_VERSION)
 
 
+@app.get("/ready")
+def ready() -> HealthResponse:
+    if not config.workspace_root.exists() or not config.workspace_root.is_dir():
+        LOGGER.error("workspace root %s is missing or not a directory", config.workspace_root)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="workspace unavailable",
+        )
+    return HealthResponse(status=SERVICE_STATUS_OK, service=SERVICE_NAME, version=SERVICE_VERSION)
+
+
 @app.post("/tools/read-file")
 def read_file_route(request: ReadFileRequest) -> ReadFileResponse:
     return _execute(read_file, request)
