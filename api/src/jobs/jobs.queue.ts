@@ -48,6 +48,11 @@ export class JobsQueue {
     return jobId;
   }
 
+  async assertReady(): Promise<void> {
+    const client = await this.queue.getBackend().client;
+    await client.ping();
+  }
+
   async getJob(jobId: string): Promise<BullJobRecord | undefined> {
     const job = await this.queue.getJob(jobId);
     if (!job) {

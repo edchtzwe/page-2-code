@@ -18,6 +18,7 @@ TTL_SECONDS=""
 KEY_ID=""
 ISSUED_AT=""
 EXPIRES_AT=""
+TMP_DIR=""
 
 base64url() {
   openssl base64 -A | tr '+/' '-_' | tr -d '='
@@ -105,12 +106,11 @@ main() {
 
   require_dependencies
 
-  local tmp_dir
-  tmp_dir="$(mktemp -d)"
-  trap 'rm -rf "${tmp_dir}"' EXIT
+  TMP_DIR="$(mktemp -d)"
+  trap 'rm -rf "${TMP_DIR}"' EXIT
 
-  local private_key_file="${tmp_dir}/jwt-private.pem"
-  local public_key_file="${tmp_dir}/jwt-public.pem"
+  local private_key_file="${TMP_DIR}/jwt-private.pem"
+  local public_key_file="${TMP_DIR}/jwt-public.pem"
 
   openssl genpkey -algorithm RSA -pkeyopt "rsa_keygen_bits:${KEY_BITS}" -out "${private_key_file}" 2>/dev/null
   openssl pkey -in "${private_key_file}" -pubout -out "${public_key_file}" 2>/dev/null

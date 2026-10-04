@@ -10,7 +10,10 @@
     "start:dev": "npm run dev",
     "start:prod": "node dist/main.js",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma:migrate": "prisma migrate dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage"
   },
   "dependencies": {
     "@google/genai": "^2.23.0",
@@ -35,9 +38,11 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.6.1",
+    "@vitest/coverage-v8": "^5.0.3",
     "prisma": "^7.10.0",
     "ts-node": "^10.9.2",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.2",
+    "vitest": "^5.0.3"
   },
   "overrides": {
     "adm-zip": "0.6.1",

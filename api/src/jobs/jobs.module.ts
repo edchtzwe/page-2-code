@@ -23,5 +23,6 @@ interface BullConnectionOptions {
   ],
   controllers: [JobsController],
   providers: [JobsService, JobsQueue],
+  exports: [JobsQueue],
 })
 export class JobsModule {}

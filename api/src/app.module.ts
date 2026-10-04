@@ -7,13 +7,14 @@ import { HealthController } from './health.controller';
 import { JobsModule } from './jobs/jobs.module';
 import { McpController } from './mcp/mcp.controller';
 import { McpProxyService } from './mcp/mcp-proxy.service';
+import { ApiReadinessService } from './readiness.service';
 
 const ALL_ROUTES = '*';
 
 @Module({
   imports: [ApiConfigModule, JobsModule],
   controllers: [HealthController, McpController],
-  providers: [McpProxyService, ServiceTokenService],
+  providers: [McpProxyService, ServiceTokenService, ApiReadinessService],
 })
 export class AppModule implements NestModule {
   configure(_consumer: MiddlewareConsumer): void {}
